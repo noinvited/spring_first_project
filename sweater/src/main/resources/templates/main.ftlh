@@ -19,7 +19,7 @@
                     <input class="form-control" type="text" name="tag" placeholder="Тэг">
                 </div>
                 <div class="mb-3">
-                    <input class="form-control" type="file">
+                    <input class="form-control" type="file" name="file">
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary" type="submit">Добавить</button>
@@ -44,6 +44,6 @@
             </div>
         </div>
     <#else>
-        No message
+        <br>No message
     </#list>
 </@c.page>

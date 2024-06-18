@@ -5,8 +5,9 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Role</th>
+            <th>Имя</th>
+            <th>Роль</th>
+            <th>Статус</th>
             <th></th>
             <th></th>
         </tr>
@@ -16,8 +17,14 @@
             <tr>
                 <td>${user.username}</td>
                 <td><#list user.roles as role>${role.getRole()}<#sep>, </#list></td>
+                <td><#if user.isActive()>Действующий аккаунт<#else> Заблокированный</#if></td>
                 <td><a href="/user/${user.id}">Изменить</a></td>
-                <td><button class="btn btn-primary" type="submit">Удалить</button></td>
+                <td>
+                    <form action="/user/delete" method="post">
+                        <input type="hidden" value="${user.id}" name="userId">
+                        <button class="btn btn-primary" type="submit">Удалить</button>
+                    </form>
+                </td>
             </tr>
         </#list>
     </tbody>

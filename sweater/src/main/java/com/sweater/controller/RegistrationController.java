@@ -21,6 +21,11 @@ public class RegistrationController {
         return "registration";
     }
 
+    @GetMapping("/afterRegistration")
+    public String afterRegistration(){
+        return "afterRegistration";
+    }
+
     @PostMapping("/registration")
     public String addUser(User user, Map<String, Object> model) {
         if(!userService.addUser(user)){
@@ -28,7 +33,7 @@ public class RegistrationController {
             return "registration";
         }
 
-        return "redirect:/login";
+        return "redirect:/afterRegistration";
     }
 
     @GetMapping("/activate/{code}")
