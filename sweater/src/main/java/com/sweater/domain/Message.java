@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String text;
@@ -18,6 +18,14 @@ public class Message {
     private String filename;
 
     public Message() {
+    }
+
+    public Message(Long id, String text, String tag, User author, String filename) {
+        this.id = id;
+        this.text = text;
+        this.tag = tag;
+        this.author = author;
+        this.filename = filename;
     }
 
     public Message(String text, String tag, User user) {

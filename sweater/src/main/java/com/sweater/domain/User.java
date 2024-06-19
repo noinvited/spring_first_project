@@ -11,7 +11,7 @@ import java.util.Objects;
 @Table(name = "usr")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
@@ -19,10 +19,24 @@ public class User implements UserDetails {
     private String email;
     private String activationCode;
 
+    public User() {
+    }
+
+    public User(Long id, String username, String password, boolean active, String email, String activationCode, List<Message> messages, List<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.email = email;
+        this.activationCode = activationCode;
+        this.messages = messages;
+        this.roles = roles;
+    }
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
     private List<Message> messages;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name ="usr_role", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name = "id_role"))
     private List<Role> roles;
 
