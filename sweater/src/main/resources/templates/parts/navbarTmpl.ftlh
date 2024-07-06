@@ -20,6 +20,11 @@
                         <a class="nav-link" href="/user">Список пользователей</a>
                     </li>
                 </#if>
+                <#if known>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/profile">Настройки профиля</a>
+                    </li>
+                </#if>
             </ul>
         </div>
 

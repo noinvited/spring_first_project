@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -29,7 +30,13 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return user;
     }
 
     public boolean addUser(User user){
@@ -52,8 +59,9 @@ public class UserService implements UserDetailsService {
                             "Welcome to Sweater, Please, visit next link: http://localhost:8080/activate/%s",
                 user.getUsername(), user.getActivationCode()
             );
+            String subject = "Activation code";
 
-            mailSender.send(user.getEmail(), "Activation code", message);
+            mailSender.send(user.getEmail(), subject, message);
         }
 
         return true;
@@ -68,6 +76,7 @@ public class UserService implements UserDetailsService {
 
         user.setActive(true);
         user.setActivationCode(null);
+
         userRepo.save(user);
         return true;
     }
@@ -107,5 +116,85 @@ public class UserService implements UserDetailsService {
         }
 
         userRepo.save(user);
+    }
+
+    public int updateEmail(User user, String email){
+        String userEmail = user.getEmail();
+
+        boolean isEmailChanged = !email.equals(userEmail);
+
+        if(isEmailChanged){
+            if(emailValidation(email)){
+                user.setEmail(email);
+
+                if(!StringUtils.isEmpty(email)){
+                    user.setActivationCode(UUID.randomUUID().toString());
+                }
+                userRepo.save(user);
+
+                String message = String.format("Hello, %s! \n" +
+                        "Your email has been changed to this one!\nSincerely, the sweater team.",
+                        user.getUsername());
+
+                String subject = "Update email";
+                mailSender.send(user.getEmail(), subject, message);
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public int updatePassword(User user,  String oldPassword, String newPassword){
+        if(!StringUtils.isEmpty(newPassword) && !StringUtils.isEmpty(oldPassword)){
+            if(passwordEncoder.matches(oldPassword, user.getPassword())){
+                user.setPassword(passwordEncoder.encode(newPassword));
+                userRepo.save(user);
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    /*public void updateProfile(User user, String oldPassword, String newPassword, String email) {
+        String userEmail = user.getEmail();
+
+        boolean isEmailChanged = !email.equals(userEmail);
+
+        if(isEmailChanged){
+            user.setEmail(email);
+
+            if(!StringUtils.isEmpty(email)){
+                user.setActivationCode(UUID.randomUUID().toString());
+            }
+        }
+
+        if(!StringUtils.isEmpty(newPassword) && !StringUtils.isEmpty(oldPassword)){
+            if(passwordEncoder.matches(oldPassword, user.getPassword())){
+                user.setPassword(passwordEncoder.encode(newPassword));
+            }
+        }
+
+        userRepo.save(user);
+
+        if(isEmailChanged){
+            String message = String.format("Hello, %s! \n" +
+                    "Your email has been changed to this one!\nSincerely, the sweater team.",
+                    user.getUsername());
+
+            String subject = "Update email";
+            mailSender.send(user.getEmail(), subject, message);
+        }
+    }*/
+
+    private boolean emailValidation(String emailAddress) {
+        return Pattern.compile("^(.+)@(\\S+)$")
+                .matcher(emailAddress)
+                .matches();
     }
 }
