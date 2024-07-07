@@ -49,9 +49,17 @@
                     </#if>
                 </div>
             </div>
+            <div class="col-sm-4">
+                <div class="g-recaptcha " data-sitekey="6Ldz-QkqAAAAAMgcsev3FVJYlp6tUfnY7Lp0eGkH"></div>
+                <#if captchaError??>
+                    <div class="alert alert-danger mt-3" role="alert">
+                        ${captchaError}
+                    </div>
+                </#if>
+            </div>
         </#if>
         <#if !isRegisterForm><div><a href="/registration">Регистрация</a></div></#if>
-        <button type="submit" class="btn btn-primary"><#if isRegisterForm>Зарегистрироваться<#else>Вход</#if></button>
+        <button type="submit" class="btn btn-primary mt-3"><#if isRegisterForm>Зарегистрироваться<#else>Вход</#if></button>
     </form>
 </#macro>
 

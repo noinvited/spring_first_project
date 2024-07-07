@@ -34,6 +34,7 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .permitAll()
                 )
+                .rememberMe(httpSecurityRememberMeConfigurer -> httpSecurityRememberMeConfigurer.key("1234"))
                 .logout(LogoutConfigurer::permitAll)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable);

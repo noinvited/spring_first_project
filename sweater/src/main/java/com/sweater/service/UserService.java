@@ -83,8 +83,6 @@ public class UserService implements UserDetailsService {
 
     public void userDeleteAdmin(Map<String, String> form, User user){
         userRepo.deleteById(user.getId());
-
-        System.out.println(user.getId());
     }
 
     public List<User> findAll() {
@@ -160,37 +158,6 @@ public class UserService implements UserDetailsService {
             return 0;
         }
     }
-
-    /*public void updateProfile(User user, String oldPassword, String newPassword, String email) {
-        String userEmail = user.getEmail();
-
-        boolean isEmailChanged = !email.equals(userEmail);
-
-        if(isEmailChanged){
-            user.setEmail(email);
-
-            if(!StringUtils.isEmpty(email)){
-                user.setActivationCode(UUID.randomUUID().toString());
-            }
-        }
-
-        if(!StringUtils.isEmpty(newPassword) && !StringUtils.isEmpty(oldPassword)){
-            if(passwordEncoder.matches(oldPassword, user.getPassword())){
-                user.setPassword(passwordEncoder.encode(newPassword));
-            }
-        }
-
-        userRepo.save(user);
-
-        if(isEmailChanged){
-            String message = String.format("Hello, %s! \n" +
-                    "Your email has been changed to this one!\nSincerely, the sweater team.",
-                    user.getUsername());
-
-            String subject = "Update email";
-            mailSender.send(user.getEmail(), subject, message);
-        }
-    }*/
 
     private boolean emailValidation(String emailAddress) {
         return Pattern.compile("^(.+)@(\\S+)$")

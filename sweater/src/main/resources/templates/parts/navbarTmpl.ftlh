@@ -12,9 +12,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Главная страница</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/main">Сообщения</a>
-                </li>
+                <#if known>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/main">Сообщения</a>
+                    </li>
+                </#if>
                 <#if isAdmin>
                     <li class="nav-item">
                         <a class="nav-link" href="/user">Список пользователей</a>
