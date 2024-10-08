@@ -81,7 +81,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public void userDeleteAdmin(Map<String, String> form, User user){
+    public void userDeleteAdmin(User user){
         userRepo.deleteById(user.getId());
     }
 

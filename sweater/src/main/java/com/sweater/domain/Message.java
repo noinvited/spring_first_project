@@ -18,7 +18,7 @@ public class Message implements Serializable {
     @Length(max = 255, message = "Tag too long (more then 255)")
     private String tag;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User author;
 

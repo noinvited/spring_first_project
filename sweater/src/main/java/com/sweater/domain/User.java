@@ -32,6 +32,13 @@ public class User implements UserDetails, Serializable {
     public User() {
     }
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Message> messages;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name ="usr_role", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    private List<Role> roles;
+
     public User(Long id, String username, String password, boolean active, String email, String activationCode, List<Message> messages, List<Role> roles) {
         this.id = id;
         this.username = username;
@@ -42,13 +49,6 @@ public class User implements UserDetails, Serializable {
         this.messages = messages;
         this.roles = roles;
     }
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
-    private List<Message> messages;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name ="usr_role", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name = "id_role"))
-    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -69,6 +69,7 @@ public class User implements UserDetails, Serializable {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
 
     @Override
     public boolean isEnabled() {
@@ -141,5 +142,18 @@ public class User implements UserDetails, Serializable {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

@@ -2,8 +2,6 @@ package com.sweater.controller;
 
 import com.sweater.domain.User;
 import com.sweater.service.UserService;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -51,7 +49,7 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user
     ){
-        userService.userDeleteAdmin(form, user);
+        userService.userDeleteAdmin(user);
         return "redirect:/user";
     }
 
