@@ -7,9 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "usr")
@@ -39,7 +37,15 @@ public class User implements UserDetails, Serializable {
     @JoinTable(name ="usr_role", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name = "id_role"))
     private List<Role> roles;
 
-    public User(Long id, String username, String password, boolean active, String email, String activationCode, List<Message> messages, List<Role> roles) {
+    @ManyToMany
+    @JoinTable(name="user_subscriptions", joinColumns = @JoinColumn(name = "channel_id"), inverseJoinColumns = @JoinColumn(name = "subscriber_id"))
+    private Set<User> subscribers = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name="user_subscriptions", joinColumns = @JoinColumn(name = "subscriber_id"), inverseJoinColumns = @JoinColumn(name = "channel_id"))
+    private Set<User> subscriptions = new HashSet<>();
+
+    public User(Long id, String username, String password, boolean active, String email, String activationCode, List<Message> messages, List<Role> roles, Set<User> subscribers, Set<User> subscribtions) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -48,6 +54,8 @@ public class User implements UserDetails, Serializable {
         this.activationCode = activationCode;
         this.messages = messages;
         this.roles = roles;
+        this.subscribers = subscribers;
+        this.subscriptions = subscribtions;
     }
 
     @Override
@@ -142,6 +150,22 @@ public class User implements UserDetails, Serializable {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public Set<User> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<User> subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    public Set<User> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<User> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
     @Override

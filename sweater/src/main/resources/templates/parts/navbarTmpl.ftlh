@@ -35,12 +35,8 @@
             </ul>
         </div>
 
-        <#if name != "unknown">
-            <div class="navbar-text me-3">${name}</div>
-            <@l.logout/>
-        <#else>
-            <a href="/login" class="btn btn-primary" role="button">Вход</a>
-        </#if>
+        <div class="navbar-text me-3"><#if user??>${name}</#if></div>
+        <@l.logout/>
 
     </div>
 </nav>

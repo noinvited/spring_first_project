@@ -1,7 +1,10 @@
 <#import "parts/commonTmpl.ftlh" as c>
 
 <@c.page>
-    <div class="m-2"><a href="/main">Вернуться назад</a></div>
+    <a class="btn btn-outline-primary mb-3" href="/main">
+        Вернуться назад
+    </a>
+
 <table class="table table-striped">
     <thead>
         <tr>

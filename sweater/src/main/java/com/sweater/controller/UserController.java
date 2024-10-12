@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -100,5 +102,41 @@ public class UserController {
         model.addAttribute("email", user.getEmail());
 
         return "profile";
+    }
+
+    @GetMapping("subscribe/{user}")
+    public String subscribe(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user){
+        userService.subscribe(currentUser, user);
+
+        return "redirect:/user-messages/" + user.getId();
+    }
+
+    @GetMapping("unsubscribe/{user}")
+    public String unsubscribe(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user){
+        userService.unsubscribe(currentUser, user);
+
+        return "redirect:/user-messages/" + user.getId();
+    }
+
+    @GetMapping("{type}/{user}/list")
+    public String userList(
+            Model model,
+            @PathVariable User user,
+            @PathVariable String type){
+        model.addAttribute("userChannel", user);
+
+        if("subscriptions".equals(type)) {
+            model.addAttribute("users", user.getSubscriptions());
+            model.addAttribute("type", "Список подписок:");
+        } else {
+            model.addAttribute("users", user.getSubscribers());
+            model.addAttribute("type", "Список подписчиков:");
+        }
+
+        return "subscriptions";
     }
 }

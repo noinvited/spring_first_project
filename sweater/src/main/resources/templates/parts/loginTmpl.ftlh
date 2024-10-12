@@ -1,3 +1,5 @@
+<#include  "securityHlpr.ftlh">
+
 <#macro login path isRegisterForm>
     <form action="${path}" method="post">
         <div class="row mb-3">
@@ -65,6 +67,8 @@
 
 <#macro logout>
     <form action="/logout" method="post">
-        <button type="submit" class="btn btn-primary">Выход</button>
+        <button type="submit" class="btn btn-primary">
+            <#if user??> Выход <#else> Вход </#if>
+        </button>
     </form>
 </#macro>

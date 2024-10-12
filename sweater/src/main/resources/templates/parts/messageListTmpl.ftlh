@@ -4,7 +4,11 @@
     <#list messages as message>
         <div class="card my-3" style="width: 25rem;">
             <div class="card-header text-end">
-                <a href="user-messages/${message.author.id}"> ${message.authorName} </a>
+                <#if isEditPage>
+                    <a href="../user-messages/${message.author.id}?isEditPage=true"> ${message.authorName} </a>
+                <#else>
+                    <a href="user-messages/${message.author.id}?isEditPage=false"> ${message.authorName} </a>
+                </#if>
             </div>
             <div>
                 <#if message.filename??>
@@ -41,6 +45,6 @@
             </div>
         </div>
     <#else>
-        <br>No message
+        <br>Нет сообщений
     </#list>
 </#macro>

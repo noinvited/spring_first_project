@@ -1,7 +1,10 @@
 <#import "parts/commonTmpl.ftlh" as c>
 
 <@c.page>
-    <div class="m-2"><a href="/user">Вернуться назад</a></div>
+    <a class="btn btn-outline-primary mb-3" href="/user">
+        Вернуться назад
+    </a>
+
     <div class="card card-body col-sm-4">
         <form action="/user" method="post">
             <input type="text" name="username" class="form-control" value="${user.username}">
